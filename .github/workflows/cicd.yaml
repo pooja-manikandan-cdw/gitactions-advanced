@@ -1,14 +1,17 @@
 name: cicd pipeline
+
 on:
   push:
     branches:
       - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -18,11 +21,90 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: build application
+      - name: Build application
         run: npm run build
-      
-      - name: upload artifact
+
+      - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: react-app-build
           path: ./dist
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: react-app-build
+          path: ./dist
+
+      - name: Run tests
+        run: npm test -- --watchAll=false
+
+      - name: Verify build output
+        run: |
+          test -f ./dist/index.html
+          echo "Build artifact verified"
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: [build, test]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: react-app-build
+          path: ./dist
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/react-app:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/react-app:${{ github.sha }}
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: docker
+
+    steps:
+      - name: Set environment variables (main)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "Environment: production"
+          echo "API_URL=https://api.production.example.com"
+          echo "DB_NAME=prod_db"
+
+      - name: Set environment variables (dev)
+        if: github.ref == 'refs/heads/dev'
+        run: |
+          echo "Environment: development"
+          echo "API_URL=https://api.dev.example.com"
+          echo "DB_NAME=dev_db"
