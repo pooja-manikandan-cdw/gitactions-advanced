@@ -95,14 +95,25 @@ jobs:
     needs: docker
 
     steps:
-      - name: Set environment variables (main)
+      - name: Print GitHub environment variables
+        run: |
+          echo "GitHub Repository: ${{ github.repository }}"
+          echo "GitHub Ref: ${{ github.ref }}"
+          echo "GitHub SHA: ${{ github.sha }}"
+          echo "GitHub Actor: ${{ github.actor }}"
+          echo "GitHub Run ID: ${{ github.run_id }}"
+          echo "GitHub Run Number: ${{ github.run_number }}"
+          echo "Docker Hub Username: ${{ secrets.DOCKERHUB_USERNAME }}"
+          echo "Docker Hub Token: ${{ secrets.DOCKERHUB_TOKEN }}"
+
+      - name: Print deployment info (main)
         if: github.ref == 'refs/heads/main'
         run: |
           echo "Environment: production"
           echo "API_URL=https://api.production.example.com"
           echo "DB_NAME=prod_db"
 
-      - name: Set environment variables (dev)
+      - name: Print deployment info (dev)
         if: github.ref == 'refs/heads/dev'
         run: |
           echo "Environment: development"
