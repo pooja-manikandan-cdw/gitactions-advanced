@@ -52,6 +52,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: react-app-build
+          path: ./dist
 
       - name: Run tests
         run: npm test -- --watchAll=false
