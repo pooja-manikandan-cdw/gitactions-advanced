@@ -112,10 +112,3 @@ jobs:
           echo "Environment: production"
           echo "API_URL=https://api.production.example.com"
           echo "DB_NAME=prod_db"
-
-      - name: Print deployment info (dev)
-        if: github.ref == 'refs/heads/dev'
-        run: |
-          echo "Environment: development"
-          echo "API_URL=https://api.dev.example.com"
-          echo "DB_NAME=dev_db"
