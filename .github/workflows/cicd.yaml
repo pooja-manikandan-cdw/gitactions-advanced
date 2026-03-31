@@ -99,8 +99,6 @@ jobs:
         run: |
           echo "Secret KEY length: ${{ secrets.KEY }}"
           echo "API_URL=${{ vars.APIKEY }}"
-        env:
-          KEY: ${{ vars.KEY }}
       - name: Print GitHub environment variables
         run: |
           echo "GitHub Repository: ${{ github.repository }}"
