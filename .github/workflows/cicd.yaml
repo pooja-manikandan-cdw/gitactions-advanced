@@ -98,6 +98,7 @@ jobs:
       - name: Use Variables
         run: |
           echo "Secret KEY length: ${{ secrets.KEY }}"
+          echo "API_URL=${{ vars.API_KEY }}"
           echo "API_URL=${{ vars.APIKEY }}"
       - name: Print GitHub environment variables
         run: |
