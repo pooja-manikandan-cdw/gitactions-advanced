@@ -95,6 +95,16 @@ jobs:
     needs: docker
     environment: "prod"
     steps:
+      - name: Use Variables
+        run: echo "API URL is $KEY"
+        env:
+          KEY: ${{ secrets.key }}
+
+      - name: Debug
+        run: |
+          echo "Length of KEY: ${#KEY}"
+        env:
+          KEY: ${{ secrets.key }}
       - name: Print GitHub environment variables
         run: |
           echo "GitHub Repository: ${{ github.repository }}"
@@ -112,9 +122,3 @@ jobs:
           echo "Environment: production"
           echo "API_URL=https://api.production.example.com"
           echo "DB_NAME=prod_db"
-
-      - name: Use Variables
-        run: |
-          echo "API URL is $KEY"
-        env:
-          KEY: ${{ secrets.KEY }}
