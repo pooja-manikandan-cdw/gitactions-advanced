@@ -98,13 +98,13 @@ jobs:
       - name: Use Variables
         run: echo "API URL is $KEY"
         env:
-          KEY: ${{ secrets.key }}
+          KEY: ${{ vars.key }}
 
       - name: Debug
         run: |
           echo "Length of KEY: ${#KEY}"
         env:
-          KEY: ${{ secrets.key }}
+          KEY: ${{ vars.key }}
       - name: Print GitHub environment variables
         run: |
           echo "GitHub Repository: ${{ github.repository }}"
