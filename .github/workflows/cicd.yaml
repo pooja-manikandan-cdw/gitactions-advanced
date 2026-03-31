@@ -101,7 +101,7 @@ jobs:
           echo "Var KEY length: ${#VAR_KEY}"
         env:
           SECRET_KEY: ${{ secrets.KEY }}
-          VAR_KEY: ${{ vars.KEY }}
+          VAR_KEY: ${{ vars.APIKEY }}
 
       - name: Debug
         run: |
