@@ -112,3 +112,9 @@ jobs:
           echo "Environment: production"
           echo "API_URL=https://api.production.example.com"
           echo "DB_NAME=prod_db"
+
+      - name: Use Variables
+        run: |
+          echo "API URL is $KEY"
+        env:
+          KEY: ${{ secrets.KEY }}
