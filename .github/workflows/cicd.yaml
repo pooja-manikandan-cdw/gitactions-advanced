@@ -97,12 +97,8 @@ jobs:
     steps:
       - name: Use Variables
         run: |
-          echo "Secret KEY length: ${#SECRET_KEY}"
-          echo "Var KEY length: ${#VAR_KEY}"
-        env:
-          SECRET_KEY: ${{ secrets.KEY }}
-          VAR_KEY: ${{ vars.APIKEY }}
-
+          echo "Secret KEY length: ${{ secrets.KEY }}"
+          echo "API_URL=${{ vars.APIKEY }}"
       - name: Debug
         run: |
           echo "Length of KEY: ${#KEY}"
