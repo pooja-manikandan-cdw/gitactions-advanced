@@ -96,15 +96,18 @@ jobs:
     environment: "prod"
     steps:
       - name: Use Variables
-        run: echo "API URL is $KEY"
+        run: |
+          echo "Secret KEY length: ${#SECRET_KEY}"
+          echo "Var KEY length: ${#VAR_KEY}"
         env:
-          KEY: ${{ vars.key }}
+          SECRET_KEY: ${{ secrets.KEY }}
+          VAR_KEY: ${{ vars.KEY }}
 
       - name: Debug
         run: |
           echo "Length of KEY: ${#KEY}"
         env:
-          KEY: ${{ vars.key }}
+          KEY: ${{ vars.KEY }}
       - name: Print GitHub environment variables
         run: |
           echo "GitHub Repository: ${{ github.repository }}"
