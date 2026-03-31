@@ -100,6 +100,7 @@ jobs:
           echo "Secret KEY length: ${{ secrets.KEY }}"
           echo "API_URL=${{ vars.API_URL }}"
           echo "API_URL=${{ vars.APIKEY }}"
+          echo "Branch: ${{ github.ref }}"
       - name: Print GitHub environment variables
         run: |
           echo "GitHub Repository: ${{ github.repository }}"
